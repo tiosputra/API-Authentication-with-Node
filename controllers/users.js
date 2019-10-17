@@ -41,5 +41,5 @@ exports.signIn = async (req, res) => {
 };
 
 exports.secret = async (req, res) => {
-  res.send("Secret called");
+  res.json({ user: req.user });
 };
