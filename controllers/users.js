@@ -1,4 +1,18 @@
 const User = require("../models/user");
+const JWT = require("jsonwebtoken");
+const { JWT_SECRET } = require("../configuration");
+
+signToken = user => {
+  return JWT.sign(
+    {
+      iss: "API Auth NodeJS",
+      sub: user._id,
+      iat: new Date().getTime(), // Current Time
+      exp: new Date().setDate(new Date().getDate() + 1) // Current Time + 1 day
+    },
+    JWT_SECRET
+  );
+};
 
 exports.signUp = async (req, res) => {
   try {
@@ -13,7 +27,10 @@ exports.signUp = async (req, res) => {
 
     await newUser.save();
 
-    res.json({ users: "created" });
+    // Generate token
+    const token = signToken(newUser);
+
+    res.status(201).json({ token });
   } catch (err) {
     res.json({ err: err.message });
   }
