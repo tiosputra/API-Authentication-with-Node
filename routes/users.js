@@ -12,7 +12,12 @@ router.post(
   UserController.signUp
 );
 
-router.post("/signin", UserController.signIn);
+router.get(
+  "/signin",
+  validateBody(schemas.authenticationSchema),
+  passport.authenticate("local", { session: false }),
+  UserController.signIn
+);
 
 router.get(
   "/secret",

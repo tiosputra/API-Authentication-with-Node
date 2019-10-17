@@ -22,8 +22,8 @@ passport.use(
 
         // Otherwise, return the user
         done(null, user);
-      } catch (err) {
-        done(err, false);
+      } catch (error) {
+        done(error, false);
       }
     }
   )
@@ -45,11 +45,16 @@ passport.use(
         if (!user) return done(null, false);
 
         // Check if the password is correct
+        const isValid = await user.isValidPassword(password);
 
         // If not, handle it
+        if (!isValid) return done(null, false);
 
         // Otherwise, return the user
-      } catch (err) {}
+        done(null, user);
+      } catch (err) {
+        done(err, false);
+      }
     }
   )
 );

@@ -37,7 +37,9 @@ exports.signUp = async (req, res) => {
 };
 
 exports.signIn = async (req, res) => {
-  res.send("Sign in called");
+  // Generate Token
+  const token = signToken(req.user);
+  res.status(200).json({ token });
 };
 
 exports.secret = async (req, res) => {
